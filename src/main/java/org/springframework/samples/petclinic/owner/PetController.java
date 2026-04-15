@@ -17,10 +17,12 @@ package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -103,8 +106,9 @@ class PetController {
 	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result,
 			RedirectAttributes redirectAttributes) {
 
-		if (StringUtils.hasText(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null)
+		if (StringUtils.hasText(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
+		}
 
 		LocalDate currentDate = LocalDate.now();
 		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(currentDate)) {
@@ -135,7 +139,7 @@ class PetController {
 		// checking if the pet name already exists for the owner
 		if (StringUtils.hasText(petName)) {
 			Pet existingPet = owner.getPet(petName, false);
-			if (existingPet != null && !existingPet.getId().equals(pet.getId())) {
+			if (existingPet != null && !Objects.equals(existingPet.getId(), pet.getId())) {
 				result.rejectValue("name", "duplicate", "already exists");
 			}
 		}
@@ -160,7 +164,9 @@ class PetController {
 	 * @param pet The pet with updated details
 	 */
 	private void updatePetDetails(Owner owner, Pet pet) {
-		Pet existingPet = owner.getPet(pet.getId());
+		Integer id = pet.getId();
+		Assert.state(id != null, "'pet.getId()' must not be null");
+		Pet existingPet = owner.getPet(id);
 		if (existingPet != null) {
 			// Update existing pet's properties
 			existingPet.setName(pet.getName());
