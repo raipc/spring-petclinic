@@ -37,6 +37,13 @@
     <spring-format.version>0.0.47</spring-format.version>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -79,6 +86,12 @@
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-spring-boot-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.raipc</groupId>
+      <artifactId>otel-metrics-jvm</artifactId>
+      <version>0.1.0</version>
     </dependency>
 
     <dependency>

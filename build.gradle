@@ -22,6 +22,7 @@ java {
 
 repositories {
   mavenCentral()
+  maven { url 'https://jitpack.io' }
 }
 
 ext.checkstyleVersion = "12.3.1"
@@ -43,6 +44,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-webmvc'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter'
+  implementation 'com.github.raipc:otel-metrics-jvm:0.1.0'
   implementation 'javax.cache:cache-api'
   implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
   runtimeOnly 'org.springframework.boot:spring-boot-starter-actuator'
